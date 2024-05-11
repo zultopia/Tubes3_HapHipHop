@@ -4580,19 +4580,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\naufn\\.nuget\\packages\\": {}
+    "/Users/azulsuhada/.nuget/packages/": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\naufn\\documents\\github\\Tubes3_Haphiphop\\src\\src.csproj",
+      "projectUniqueName": "/Users/azulsuhada/Documents/Semester4/Stima/Tubes-3-Stima/Tubes3_HapHipHop/src/src.csproj",
       "projectName": "src",
-      "projectPath": "C:\\Users\\naufn\\documents\\github\\Tubes3_Haphiphop\\src\\src.csproj",
-      "packagesPath": "C:\\Users\\naufn\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\naufn\\documents\\github\\Tubes3_Haphiphop\\src\\obj\\",
+      "projectPath": "/Users/azulsuhada/Documents/Semester4/Stima/Tubes-3-Stima/Tubes3_HapHipHop/src/src.csproj",
+      "packagesPath": "/Users/azulsuhada/.nuget/packages/",
+      "outputPath": "/Users/azulsuhada/Documents/Semester4/Stima/Tubes-3-Stima/Tubes3_HapHipHop/src/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\naufn\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "/Users/azulsuhada/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
@@ -4662,7 +4662,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.204/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.204/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

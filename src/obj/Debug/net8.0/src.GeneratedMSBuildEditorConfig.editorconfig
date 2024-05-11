@@ -13,12 +13,12 @@ build_property.PlatformNeutralAssembly =
 build_property.EnforceExtendedAnalyzerRules = 
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = src
-build_property.ProjectDir = C:\Users\naufn\documents\github\Tubes3_Haphiphop\src\
+build_property.ProjectDir = /Users/azulsuhada/Documents/Semester4/Stima/Tubes-3-Stima/Tubes3_HapHipHop/src/
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 
-[C:/Users/naufn/documents/github/Tubes3_Haphiphop/src/App.axaml]
+[/Users/azulsuhada/Documents/Semester4/Stima/Tubes-3-Stima/Tubes3_HapHipHop/src/App.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
-[C:/Users/naufn/documents/github/Tubes3_Haphiphop/src/Views/MainWindow.axaml]
+[/Users/azulsuhada/Documents/Semester4/Stima/Tubes-3-Stima/Tubes3_HapHipHop/src/Views/MainWindow.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
