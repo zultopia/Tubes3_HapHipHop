@@ -4585,9 +4585,9 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/azulsuhada/Documents/Semester4/Stima/Tubes-3-Stima/Tubes3_HapHipHop/src/src.csproj",
-      "projectName": "src",
-      "projectPath": "/Users/azulsuhada/Documents/Semester4/Stima/Tubes-3-Stima/Tubes3_HapHipHop/src/src.csproj",
+      "projectUniqueName": "/Users/azulsuhada/Documents/Semester4/Stima/Tubes-3-Stima/Tubes3_HapHipHop/src/HapHipHop.csproj",
+      "projectName": "HapHipHop",
+      "projectPath": "/Users/azulsuhada/Documents/Semester4/Stima/Tubes-3-Stima/Tubes3_HapHipHop/src/HapHipHop.csproj",
       "packagesPath": "/Users/azulsuhada/.nuget/packages/",
       "outputPath": "/Users/azulsuhada/Documents/Semester4/Stima/Tubes-3-Stima/Tubes3_HapHipHop/src/obj/",
       "projectStyle": "PackageReference",

@@ -1,9 +1,9 @@
 using System;
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
-using src.ViewModels;
+using HapHipHop.ViewModels;
 
-namespace src;
+namespace HapHipHop;
 
 public class ViewLocator : IDataTemplate
 {

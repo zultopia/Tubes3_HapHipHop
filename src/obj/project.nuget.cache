@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "XEnkp4eZH4ALB7g/ybsizOUJZg6a8cun58s1OdqRc4oQijDO9FCq4cPcnp2iwg40XKc3kAZZIYT9nHZJ2dVu+g==",
+  "dgSpecHash": "XcFGgwitOxdsrkDMU3v16ZqQlf5H9X8to2sCQejw9t3u5F+y537PJkfg8HZie0yQaCe6SYgHVACL5DDkKgsfBQ==",
   "success": true,
-  "projectFilePath": "/Users/azulsuhada/Documents/Semester4/Stima/Tubes-3-Stima/Tubes3_HapHipHop/src/src.csproj",
+  "projectFilePath": "/Users/azulsuhada/Documents/Semester4/Stima/Tubes-3-Stima/Tubes3_HapHipHop/src/HapHipHop.csproj",
   "expectedPackageFiles": [
     "/Users/azulsuhada/.nuget/packages/avalonia/11.0.10/avalonia.11.0.10.nupkg.sha512",
     "/Users/azulsuhada/.nuget/packages/avalonia.angle.windows.natives/2.1.0.2023020321/avalonia.angle.windows.natives.2.1.0.2023020321.nupkg.sha512",

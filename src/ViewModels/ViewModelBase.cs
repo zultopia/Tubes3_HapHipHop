@@ -1,6 +1,6 @@
 ﻿using ReactiveUI;
 
-namespace src.ViewModels;
+namespace HapHipHop.ViewModels;
 
 public class ViewModelBase : ReactiveObject
 {

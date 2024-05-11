@@ -2,7 +2,7 @@
 using Avalonia.ReactiveUI;
 using System;
 
-namespace src;
+namespace HapHipHop;
 
 sealed class Program
 {

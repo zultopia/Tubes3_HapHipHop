@@ -1,0 +1,66 @@
+<Window x:Name="bioPrint" xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:HapHipHop.ViewModels"
+        xmlns:local="using:HapHipHop.Views"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="1280" d:DesignHeight="720"
+        x:Class="HapHipHop.Views.BioPrint"
+        x:DataType="vm:BioPrintViewModel"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="HapHipHop"
+        Height="720"
+        Width="1280"
+        FontFamily="/Assets/Fonts#Montserrat">
+    
+    <!-- Background menggunakan gambar Main.png -->
+    <Window.Background>
+        <ImageBrush Source="avares://HapHipHop/Assets/Images/Main.png" Stretch="UniformToFill"/>
+    </Window.Background>
+
+     <Grid>
+        <!-- Menampilkan tulisan "Hallo Azul" -->
+        <TextBlock Text="Hallo Azul" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="24" FontWeight="Bold" Foreground="White"/>
+
+        <!-- Button "Pilih Citra" -->
+        <Button Content="Pilih Citra" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,800,120"
+            Height="40" Width="120"
+            Background="#778A35" Foreground="White"
+            BorderThickness="0" Padding="10"
+            Command="{Binding PilihCitraCommand}"
+            HorizontalContentAlignment="Center"
+            FontFamily="Comic Sans MS">
+        </Button>
+
+        <!-- Toggle switch untuk memilih BM atau KMP -->
+        <ToggleSwitch x:Name="toggleSwitch" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,325,120"
+            Width="200" Height="40" BorderThickness="0" Padding="10"
+            Background="#D1E2C4" Foreground="#778A35" FontFamily="Comic Sans MS"
+            HorizontalContentAlignment="Center"
+            OnContent="BM" OffContent="KMP"
+            IsChecked="{Binding IsBMChecked, Mode=TwoWay}">
+        </ToggleSwitch>
+
+        <!-- Button "Search" -->
+        <Button Content="Search" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,200,120"
+            Height="40" Width="80"
+            Background="#778A35" Foreground="White"
+            BorderThickness="0" Padding="10"
+            Command="{Binding SearchCommand}"
+            HorizontalContentAlignment="Center"
+            FontFamily="Comic Sans MS">
+        </Button>
+
+        <!-- Tombol "Back" -->
+        <Button Content="Back" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="20"
+            Height="40" Width="80"
+            Background="#778A35" Foreground="White"
+            BorderThickness="0" Padding="10"
+            Command="{Binding BioPrintCommand}"
+            HorizontalContentAlignment="Center"
+            FontFamily="Comic Sans MS">
+        </Button>
+
+    </Grid>
+
+</Window>

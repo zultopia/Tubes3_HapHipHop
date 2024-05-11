@@ -1,10 +1,10 @@
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
-using src.ViewModels;
-using src.Views;
+using HapHipHop.ViewModels;
+using HapHipHop.Views;
 
-namespace src;
+namespace HapHipHop;
 
 public partial class App : Application
 {

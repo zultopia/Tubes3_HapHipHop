@@ -1,13 +1,17 @@
-<Window xmlns="https://github.com/avaloniaui"
+<Window x:Name="mainWindow" xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:vm="using:src.ViewModels"
+        xmlns:vm="using:HapHipHop.ViewModels"
+        xmlns:local="using:HapHipHop.Views"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-        x:Class="src.Views.MainWindow"
+        mc:Ignorable="d" d:DesignWidth="1280" d:DesignHeight="720"
+        x:Class="HapHipHop.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
         Icon="/Assets/avalonia-logo.ico"
-        Title="src">
+        Title="HapHipHop"
+        Height="720"
+        Width="1280"
+        FontFamily="/Assets/Fonts#Montserrat">
 
     <Design.DataContext>
         <!-- This only sets the DataContext for the previewer in an IDE,
@@ -15,6 +19,25 @@
         <vm:MainWindowViewModel/>
     </Design.DataContext>
 
-    <TextBlock Text="{Binding Greeting}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+    <Window.Background>
+        <ImageBrush Source="avares://HapHipHop/Assets/Images/Home.png" Stretch="Fill"/>
+    </Window.Background>
+
+    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">
+        <!-- Image Button Start -->
+        <Canvas>
+            <Button Canvas.Left="100" Canvas.Top="-165"
+                Command="{Binding StartCommand}" 
+                BorderThickness="0" Background="Transparent" Click="OnStartButtonClick">
+                <Image Source="avares://HapHipHop/Assets/Images/Start.png" Width="300" Height="300"/>
+            </Button>
+        </Canvas>
+
+        <!-- Your existing content 
+        <StackPanel Width="200" Margin="16" Spacing="10">
+            <TextBlock Text="{Binding Greeting}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <Button HorizontalAlignment="Center"> Click Me! </Button>
+        </StackPanel> -->
+    </StackPanel>
 
 </Window>
