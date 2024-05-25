@@ -33,17 +33,17 @@ namespace HapHipHop.ViewModels
             PilihCitraCommand = ReactiveCommand.Create(OnPilihCitraCommandExecute);
             SearchCommand = ReactiveCommand.Create(OnSearchCommandExecute);
 
-            // Subscribe untuk memantau perubahan pada toggle switch dan tombol Pilih Citra
+            // Perubahan pada toggle switch dan tombol Pilih Citra
             this.WhenAnyValue(x => x.IsBMChecked)
                 .Subscribe(isChecked =>
                 {
-                    // Lakukan sesuatu ketika toggle switch BM berubah
+                    // Toggle switch BM 
                 });
 
             this.WhenAnyValue(x => x.IsKMPChecked)
                 .Subscribe(isChecked =>
                 {
-                    // Lakukan sesuatu ketika toggle switch KMP berubah
+                    // Toggle switch KMP 
                 });
         }
 
