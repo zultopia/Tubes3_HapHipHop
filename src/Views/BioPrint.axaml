@@ -12,16 +12,12 @@
         Height="720"
         Width="1280"
         FontFamily="/Assets/Fonts#Montserrat">
-    
-    <!-- Background menggunakan gambar Main.png -->
+
     <Window.Background>
         <ImageBrush Source="avares://HapHipHop/Assets/Images/Main.png" Stretch="UniformToFill"/>
     </Window.Background>
 
-     <Grid>
-        <!-- Menampilkan tulisan "Hallo Azul" -->
-        <TextBlock Text="Hallo Azul" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="24" FontWeight="Bold" Foreground="White"/>
-
+    <Grid>
         <!-- Button "Pilih Citra" -->
         <Button Content="Pilih Citra" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,1100,200"
             Height="40" Width="120"
@@ -60,6 +56,24 @@
             HorizontalContentAlignment="Center"
             FontFamily="Comic Sans MS">
         </Button>
+
+        <!-- Gambar yang dipilih -->
+        <Image Source="{Binding SelectedImage}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="100,300,0,0"
+            Width="200" Height="200" Stretch="Uniform"/>
+
+        <!-- Hasil gambar sidik jari -->
+        <Image Source="{Binding SearchResultImage}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="450,300,0,0"
+            Width="200" Height="200" Stretch="Uniform"/>
+
+        <!-- Biodata hasil pencarian -->
+        <TextBlock Text="{Binding SearchResultBioData}" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,260,350,0"
+            Width="300" TextWrapping="Wrap"/>
+
+        <!-- Waktu pencarian dan persentase kecocokan -->
+        <StackPanel HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="200,0,0,100">
+            <TextBlock Text="{Binding SearchTime}" Margin="0,0,0,10"/>
+            <TextBlock Text="{Binding MatchPercentage}"/>
+        </StackPanel>
 
     </Grid>
 

@@ -1,8 +1,13 @@
 using ReactiveUI;
 using System;
+using System.IO;
 using System.Reactive;
 using System.Windows.Input;
 using HapHipHop.Views;
+using Avalonia.Controls;
+using Avalonia.Media.Imaging;
+using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace HapHipHop.ViewModels
 {
@@ -11,9 +16,14 @@ namespace HapHipHop.ViewModels
         public ReactiveCommand<Unit, Unit> BioPrintCommand { get; }
         public ReactiveCommand<Unit, Unit> PilihCitraCommand { get; }
         public ReactiveCommand<Unit, Unit> SearchCommand { get; }
-        
+
         private bool _isBMChecked;
         private bool _isKMPChecked;
+        private Bitmap? _selectedImage;
+        private Bitmap? _searchResultImage;
+        private string? _searchResultBioData;
+        private string? _searchTime;
+        private string? _matchPercentage;
 
         public bool IsBMChecked
         {
@@ -27,42 +37,96 @@ namespace HapHipHop.ViewModels
             set => this.RaiseAndSetIfChanged(ref _isKMPChecked, value);
         }
 
+        public Bitmap? SelectedImage
+        {
+            get => _selectedImage;
+            set => this.RaiseAndSetIfChanged(ref _selectedImage, value);
+        }
+
+        public Bitmap? SearchResultImage
+        {
+            get => _searchResultImage;
+            set => this.RaiseAndSetIfChanged(ref _searchResultImage, value);
+        }
+
+        public string? SearchResultBioData
+        {
+            get => _searchResultBioData;
+            set => this.RaiseAndSetIfChanged(ref _searchResultBioData, value);
+        }
+
+        public string? SearchTime
+        {
+            get => _searchTime;
+            set => this.RaiseAndSetIfChanged(ref _searchTime, value);
+        }
+
+        public string? MatchPercentage
+        {
+            get => _matchPercentage;
+            set => this.RaiseAndSetIfChanged(ref _matchPercentage, value);
+        }
+
         public BioPrintViewModel()
         {
             BioPrintCommand = ReactiveCommand.Create(OnBioPrintCommandExecute);
-            PilihCitraCommand = ReactiveCommand.Create(OnPilihCitraCommandExecute);
+            PilihCitraCommand = ReactiveCommand.CreateFromTask(OnPilihCitraCommandExecute);
             SearchCommand = ReactiveCommand.Create(OnSearchCommandExecute);
-
-            // Perubahan pada toggle switch dan tombol Pilih Citra
-            this.WhenAnyValue(x => x.IsBMChecked)
-                .Subscribe(isChecked =>
-                {
-                    // Toggle switch BM 
-                });
-
-            this.WhenAnyValue(x => x.IsKMPChecked)
-                .Subscribe(isChecked =>
-                {
-                    // Toggle switch KMP 
-                });
         }
 
         private void OnBioPrintCommandExecute()
         {
-            // Implementasi logika navigasi kembali ke MainWindow
             var mainWindowViewModel = new MainWindowViewModel();
             var mainWindow = new MainWindow { DataContext = mainWindowViewModel };
             mainWindow.Show();
         }
 
-        private void OnPilihCitraCommandExecute()
+        private async Task OnPilihCitraCommandExecute()
         {
-            // Implementasi logika pilih citra
+            var openFileDialog = new OpenFileDialog()
+            {
+                Title = "Pilih Citra",
+                Filters = new List<FileDialogFilter>()
+                {
+                    new FileDialogFilter() { Name = "Images", Extensions = { "png", "jpg", "jpeg", "bmp" } }
+                }
+            };
+
+            var window = new Window();  
+
+            var result = await openFileDialog.ShowAsync(window);
+
+            if (result != null && result.Length > 0)
+            {
+                var filePath = result[0];
+                using (var stream = File.OpenRead(filePath))
+                {
+                    SelectedImage = await Task.Run(() => Bitmap.DecodeToWidth(stream, 300));
+                }
+            }
         }
 
         private void OnSearchCommandExecute()
         {
-            // Implementasi logika search
+            Console.WriteLine("SearchCommand executed");
+
+            var basePath = AppDomain.CurrentDomain.BaseDirectory;
+            var relativePath = Path.Combine(basePath, "..", "..", "..", "ViewModels", "1__M_Left_index_finger.BMP");
+            var absolutePath = Path.GetFullPath(relativePath);
+
+            if (File.Exists(absolutePath))
+            {
+                SearchResultImage = new Bitmap(absolutePath);
+                Console.WriteLine("Gambar ditemukan dan dimuat: " + absolutePath);
+            }
+            else
+            {
+                Console.WriteLine("Gambar tidak ditemukan: " + absolutePath);
+            }
+
+            SearchResultBioData = "Nama: Benjolmin\nUmur: 100\nJenis Kelamin: Laki-laki";
+            SearchTime = "Waktu Pencarian: 2 detik";
+            MatchPercentage = "Persentase Kecocokan: 95%";
         }
     }
 }

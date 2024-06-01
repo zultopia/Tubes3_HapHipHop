@@ -22,9 +22,14 @@ namespace HapHipHop.ViewModels
 
         private void OnStartCommandExecute()
         {
-            // Implement logic to navigate or perform actions on Start button click
             var bioPrintViewModel = new BioPrintViewModel();
             bioPrintPage = new BioPrint { DataContext = bioPrintViewModel }; 
+            (bioPrintPage.DataContext as BioPrintViewModel)?.BioPrintCommand.Subscribe(_ =>
+            {
+                (bioPrintPage as IDisposable)?.Dispose();
+                bioPrintPage.Close();
+                bioPrintPage = null;
+            });
             bioPrintPage.Show();
         }
 
@@ -32,11 +37,10 @@ namespace HapHipHop.ViewModels
         {
             if (bioPrintPage != null)
             {
+                bioPrintPage.Close();
+                bioPrintPage = null;
                 var mainWindow = new MainWindow { DataContext = new MainWindowViewModel() };
                 mainWindow.Show();
-                (bioPrintPage as IDisposable)?.Dispose();
-                bioPrintPage.Close();
-                bioPrintPage = null; // Disetel ke ke null lagi abis digunain
             }
             else
             {
