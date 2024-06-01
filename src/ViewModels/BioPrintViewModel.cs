@@ -108,25 +108,56 @@ namespace HapHipHop.ViewModels
 
         private void OnSearchCommandExecute()
         {
-            Console.WriteLine("SearchCommand executed");
-
-            var basePath = AppDomain.CurrentDomain.BaseDirectory;
-            var relativePath = Path.Combine(basePath, "..", "..", "..", "ViewModels", "1__M_Left_index_finger.BMP");
-            var absolutePath = Path.GetFullPath(relativePath);
-
-            if (File.Exists(absolutePath))
+            if (IsBMChecked)
             {
-                SearchResultImage = new Bitmap(absolutePath);
-                Console.WriteLine("Gambar ditemukan dan dimuat: " + absolutePath);
+                // Algoritma BM
+                Console.WriteLine("SearchCommand executed - Using BM algorithm");
+
+                // Implementasi Algoritma BM
+
+                var basePath = AppDomain.CurrentDomain.BaseDirectory;
+                var relativePath = Path.Combine(basePath, "..", "..", "..", "ViewModels", "1__M_Left_index_finger.BMP");
+                var absolutePath = Path.GetFullPath(relativePath);
+
+                if (File.Exists(absolutePath))
+                {
+                    SearchResultImage = new Bitmap(absolutePath);
+                    Console.WriteLine("Gambar ditemukan dan dimuat: " + absolutePath);
+                }
+                else
+                {
+                    Console.WriteLine("Gambar tidak ditemukan: " + absolutePath);
+                }
+
+                SearchResultBioData = "Nama: Benjolmin\nUmur: 100\nJenis Kelamin: Laki-laki";
+                SearchTime = "Waktu Pencarian: 2 detik";
+                MatchPercentage = "Persentase Kecocokan: 95%";
             }
             else
             {
-                Console.WriteLine("Gambar tidak ditemukan: " + absolutePath);
-            }
+                // Algoritma KMP
+                Console.WriteLine("SearchCommand executed - Using KMP algorithm");
 
-            SearchResultBioData = "Nama: Benjolmin\nUmur: 100\nJenis Kelamin: Laki-laki";
-            SearchTime = "Waktu Pencarian: 2 detik";
-            MatchPercentage = "Persentase Kecocokan: 95%";
+                // Implementasi Algoritma KMP
+
+                var basePath = AppDomain.CurrentDomain.BaseDirectory;
+                var relativePath = Path.Combine(basePath, "..", "..", "..", "ViewModels", "1__M_Left_index_finger.BMP");
+                var absolutePath = Path.GetFullPath(relativePath);
+
+                if (File.Exists(absolutePath))
+                {
+                    SearchResultImage = new Bitmap(absolutePath);
+                    Console.WriteLine("Gambar ditemukan dan dimuat: " + absolutePath);
+                }
+                else
+                {
+                    Console.WriteLine("Gambar tidak ditemukan: " + absolutePath);
+                }
+
+                SearchResultBioData = "Nama: Benjolmin\nUmur: 100\nJenis Kelamin: Laki-laki";
+                SearchTime = "Waktu Pencarian: 2 detik";
+                MatchPercentage = "Persentase Kecocokan: 95%";
+            }
         }
     }
 }
