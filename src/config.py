@@ -8,55 +8,40 @@ db_config = {
     'port': '5432'
 }
 
-names_to_delete_biodata = [
-    "Paul Thompson",
-    "Sophia Gonzalez",
-    "Katelyn Knight",
-    "Melissa Pennington",
-    "Brandy Smith",
-    "Sandra Wilson",
-    "Susan Roberts",
-    "Maria Holland",
-    "Eric Cox",
-    "Robert Thompson"
-]
+conn = psycopg2.connect(**db_config)
+cursor = conn.cursor()
 
-names_to_delete_sidik_jari = [
-    "Edward Ballard",
-    "Brandon James",
-    "Christian Garcia",
-    "Alan Martinez",
-    "Christopher Butler",
-    "Mr. Jeffery Deleon",
-    "Mrs. Kathleen Caldwell MD",
-    "Amy Lee",
-    "Gregory Perry",
-    "Zoe Phillips"
-]
+def delete_data():
+    try:
+        delete_biodata_query = '''
+        WITH biodata_to_delete AS (
+            SELECT ctid FROM biodata
+            ORDER BY ctid
+            LIMIT 600
+        )
+        DELETE FROM biodata
+        WHERE ctid IN (SELECT ctid FROM biodata_to_delete)
+        '''
+        cursor.execute(delete_biodata_query)
 
-try:
-    conn = psycopg2.connect(**db_config)
-    cursor = conn.cursor()
-    
-    delete_query_biodata = '''
-    DELETE FROM biodata
-    WHERE nama = ANY(%s)
-    '''
-    delete_query_sidik_jari = '''
-    DELETE FROM sidik_jari
-    WHERE nama = ANY(%s)
-    '''
+        delete_sidik_jari_query = '''
+        WITH sidik_jari_to_delete AS (
+            SELECT ctid FROM sidik_jari
+            ORDER BY ctid
+            LIMIT 6000
+        )
+        DELETE FROM sidik_jari
+        WHERE ctid IN (SELECT ctid FROM sidik_jari_to_delete)
+        '''
+        cursor.execute(delete_sidik_jari_query)
 
-    cursor.execute(delete_query_biodata, (names_to_delete_biodata,))
-    conn.commit()
-    print(f'{cursor.rowcount} records deleted from biodata.')
-    cursor.execute(delete_query_sidik_jari, (names_to_delete_sidik_jari,))
-    conn.commit()
-    print(f'{cursor.rowcount} records deleted from sidik_jari.')
+        conn.commit()
+        print('Data berhasil dihapus.')
+    except Exception as e:
+        print(f'Error saat menghapus data: {e}')
+        conn.rollback()
+    finally:
+        cursor.close()
+        conn.close()
 
-except Exception as e:
-    print(f'Error saat menghapus data: {e}')
-    conn.rollback()
-finally:
-    cursor.close()
-    conn.close()
+delete_data()

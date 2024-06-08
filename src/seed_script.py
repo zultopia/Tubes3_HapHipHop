@@ -11,12 +11,44 @@ db_config = {
     'port': '5432'
 }
 
-faker = Faker('id_ID')
+faker = Faker(['id_ID', 'en_US'])
 
-def generate_alay_name(name):
-    name = name.replace('a', '4').replace('i', '1').replace('e', '3').replace('o', '0').replace('u', 'v').replace("l", "1").replace("z", "2").replace("s", "5").replace("g", "6").replace("t", "7").replace("b", "8").replace("g", "9").replace("a", "@").replace("i", "!").replace("s", "$")
-    name = ''.join(random.choice([k.upper(), k.lower()]) for k in name)
-    return name
+def generate_alay_name(name, max_length=50):
+    substitutions = {
+        'a': ['4', '@'],
+        'i': ['1', '!'],
+        'e': ['3'],
+        'o': ['0'],
+        'u': ['v'],
+        'l': ['1'],
+        'z': ['2'],
+        's': ['5', '$'],
+        'g': ['6', '9'],
+        't': ['7'],
+        'b': ['8']
+    }
+    
+    alay_name = ''.join(
+        random.choice(substitutions.get(char.lower(), [char])).upper() if random.random() < 0.5 else 
+        random.choice(substitutions.get(char.lower(), [char])).lower() 
+        for char in name
+    )
+    
+    if random.random() < 0.3:
+        vowels = 'aeiouAEIOU'
+        alay_name = ''.join([char for char in alay_name if char in vowels])
+
+    alay_name = alay_name[:max_length]
+
+    while not alay_name.strip():
+        alay_name = ''.join(
+            random.choice(substitutions.get(char.lower(), [char])).upper() if random.random() < 0.5 else 
+            random.choice(substitutions.get(char.lower(), [char])).lower() 
+            for char in name
+        )
+        alay_name = alay_name[:max_length]
+    
+    return alay_name
 
 conn = psycopg2.connect(**db_config)
 cursor = conn.cursor()
