@@ -8,41 +8,20 @@ namespace Models
     public static class FingerprintConverter
     {
 
-        public static string ConvertImageToBinary(Bitmap image, int blockSize)
+        public static string ConvertImageToBinary(Bitmap image)
         {
             StringBuilder binaryStringBuilder = new StringBuilder();
 
             int width = image.Width;
             int height = image.Height;
 
-            // Convert RGB to binary
-            for (int y = 0; y < height; y += blockSize)
+            for (int y = 0; y < height; y++)
             {
-                for (int x = 0; x < width; x += blockSize)
+                for (int x = 0; x < width; x++)
                 {
-                    int totalGrayValue = 0;
-                    int pixelCount = 0;
-                    for (int dy = 0; dy < blockSize; dy++)
-                    {
-                        for (int dx = 0; dx < blockSize; dx++)
-                        {
-                            int currentX = x + dx;
-                            int currentY = y + dy;
-                            if (currentX < width && currentY < height)
-                            {
-                                Color pixelColor = image.GetPixel(currentX, currentY);
-                                int grayValue = (pixelColor.R + pixelColor.G + pixelColor.B) / 3; // Convert to grayscale
-                                totalGrayValue += grayValue;
-                                pixelCount++;
-                            }
-                        }
-                    }
-                    if (pixelCount > 0)
-                    {
-                        int averageGrayValue = totalGrayValue / pixelCount;
-                        string binaryValue = Convert.ToString(averageGrayValue, 2).PadLeft(8, '0');
-                        binaryStringBuilder.Append(binaryValue);
-                    }
+                    Color pixelColor = image.GetPixel(x, y);
+                    int binaryValue = (pixelColor.R == 0 && pixelColor.G == 0 && pixelColor.B == 0) ? 0 : 1;
+                    binaryStringBuilder.Append(binaryValue);
                 }
             }
 
@@ -65,6 +44,74 @@ namespace Models
             }
 
             return asciiStringBuilder.ToString();
+        }
+
+        public static Bitmap CropImageWithPadding(Bitmap image, int removeWidth, int removeHeight)
+        {
+            int width = image.Width;
+            int height = image.Height;
+
+            int newWidth = width - 2 * removeWidth;
+            int newHeight = height - 2 * removeHeight;
+
+            Bitmap croppedImage = new Bitmap(newWidth, newHeight);
+
+            using (Graphics g = Graphics.FromImage(croppedImage))
+            {
+                g.DrawImage(image, new Rectangle(0, 0, newWidth, newHeight), new Rectangle(removeWidth, removeHeight, newWidth, newHeight), GraphicsUnit.Pixel);
+            }
+
+            return croppedImage;
+        }
+
+        public static string CleanPattern(string source, string pattern)
+        {
+            source = RemoveFirstLongestOccurrence(source, pattern);
+            source = RemoveLastLongestOccurence(source, pattern);
+            return source;
+        }
+
+        public static string RemoveFirstLongestOccurrence(string source, string pattern) 
+        {
+            int longestSequenceLength = 0;
+            int i = 0;
+
+            while (i <= source.Length - pattern.Length)
+            {
+                if (source.Substring(i, pattern.Length) == pattern)
+                {
+                    longestSequenceLength += pattern.Length;
+                    i += pattern.Length;
+                }
+                else
+                {
+                    break;
+                }
+            }
+            
+            source = source.Remove(0, longestSequenceLength);
+            return source;
+        }
+        
+        public static string RemoveLastLongestOccurence(string source, string pattern)
+        {
+            int startIndex = source.Length;
+            int i = source.Length;
+            while (i >= pattern.Length)
+            {
+                if (source.Substring(i - pattern.Length, pattern.Length) == pattern)
+                {
+                    startIndex = i - pattern.Length;
+                    i -= pattern.Length;
+                }
+                else
+                {
+                    break;
+                }
+            }
+            
+            source = source.Remove(startIndex);
+            return source;
         }
     }
 }
