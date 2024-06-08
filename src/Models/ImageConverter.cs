@@ -46,6 +46,24 @@ namespace Models
             return asciiStringBuilder.ToString();
         }
 
+        public static Bitmap CropImageWithPadding(Bitmap image, int removeWidth, int removeHeight)
+        {
+            int width = image.Width;
+            int height = image.Height;
+
+            int newWidth = width - 2 * removeWidth;
+            int newHeight = height - 2 * removeHeight;
+
+            Bitmap croppedImage = new Bitmap(newWidth, newHeight);
+
+            using (Graphics g = Graphics.FromImage(croppedImage))
+            {
+                g.DrawImage(image, new Rectangle(0, 0, newWidth, newHeight), new Rectangle(removeWidth, removeHeight, newWidth, newHeight), GraphicsUnit.Pixel);
+            }
+
+            return croppedImage;
+        }
+
         public static string CleanPattern(string source, string pattern)
         {
             source = RemoveFirstLongestOccurrence(source, pattern);
