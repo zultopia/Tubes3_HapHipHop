@@ -17,7 +17,7 @@ def delete_data():
         WITH biodata_to_delete AS (
             SELECT ctid FROM biodata
             ORDER BY ctid
-            LIMIT 600
+            LIMIT 1200
         )
         DELETE FROM biodata
         WHERE ctid IN (SELECT ctid FROM biodata_to_delete)
@@ -28,7 +28,7 @@ def delete_data():
         WITH sidik_jari_to_delete AS (
             SELECT ctid FROM sidik_jari
             ORDER BY ctid
-            LIMIT 6000
+            LIMIT 12000
         )
         DELETE FROM sidik_jari
         WHERE ctid IN (SELECT ctid FROM sidik_jari_to_delete)
