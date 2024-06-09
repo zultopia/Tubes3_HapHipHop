@@ -5,61 +5,25 @@ namespace HapHipHop.Models
 {
     public class RegexString
     {
-        // static void Main()
-        // {
-        //     // Contoh database nama di tabel sidik_jari nanti
-        //     var names = new List<string> { "Bintang Dwi Marthen", "Naufal Adnan", "Yovanka Sandrina Maharaja", "Kayla Dyara", "Ahmad Mudabbir Arif", "Zahira Dina Amalia", "Marzuli Suhada M", "Shazya Audrea Taufik" };
-
-        //     // Inputan nama dalam bahasa alay
-        //     Console.WriteLine("Masukkan nama dalam bahasa alay:");
-        //     string? alayText = Console.ReadLine();
-
-        //     // Handle null input
-        //     if (alayText == null)
-        //     {
-        //         Console.WriteLine("Input tidak boleh null");
-        //         return;
-        //     }
-
-        //     // Konversi nama alay ke bentuk asli
-        //     string convertedName = ConvertAlayToOriginal(alayText);
-
-        //     // Tetapkan batasan persentase minimum kemiripan
-        //     double similarityThreshold = 0.7;
-
-        //     // Cari nama asli yang paling mirip
-        //     string bestMatch = FindBestMatch(convertedName, names, similarityThreshold, out double similarity);
-
-        //     if (similarity < similarityThreshold)
-        //     {
-        //         Console.WriteLine($"Tidak ada nama yang cukup mirip. Persentase kemiripan tertinggi adalah {similarity * 100:F2}%.");
-        //     }
-        //     else
-        //     {
-        //         Console.WriteLine($"Nama terkonversi: {convertedName}");
-        //         Console.WriteLine($"Nama paling mirip: {bestMatch} (Kemiripan: {similarity * 100:F2}%)");
-        //     }
-        // }
-
         public static string ConvertAlayToOriginal(string input)
         {
             var replacements = new List<(string pattern, string replacement)>
-            {
-                ("1", "i"), ("1", "l"), ("2", "z"), ("3", "e"), ("4", "a"), ("5", "s"), 
-                ("6", "g"), ("7", "t"), ("8", "b"), ("9", "g"), ("0", "o"), ("@", "a"), 
-                ("!", "i"), ("$", "s"), ("&", "e"), ("#", "h")
-            };
+        {
+            ("1", "i"), ("1", "l"), ("2", "z"), ("3", "e"), ("4", "a"), ("5", "s"),
+            ("6", "g"), ("7", "t"), ("8", "b"), ("9", "g"), ("0", "o"), ("@", "a"),
+            ("!", "i"), ("$", "s"), ("&", "e"), ("#", "h")
+        };
 
             input = ReplaceAll(input, replacements);
 
             input = RemoveNonAlphanumeric(input);
 
             var abbreviations = new List<(string pattern, string replacement)>
-            {
-                ("bntng", "bintang"),
-                ("dw", "dwi"),
-                ("mrthn", "marthen"),
-            };
+        {
+            ("bntng", "bintang"),
+            ("dw", "dwi"),
+            ("mrthn", "marthen"),
+        };
 
             input = ReplaceAll(input, abbreviations);
 
