@@ -82,7 +82,27 @@ namespace HapHipHop.Models
         {
             source = RemoveFirstLongestOccurrence(source, pattern);
             source = RemoveLastLongestOccurence(source, pattern);
-            return source;
+
+            int patternSize = source.Length;
+            if (patternSize <= 64)
+            {
+                return source;
+            }
+            else
+            {
+                int middleIdx = patternSize / 2;
+                int startIdx = middleIdx - 32;
+                if (startIdx < 0)
+                {
+                    startIdx = 0;
+                }
+                else if (startIdx + 64 > patternSize)
+                {
+                    startIdx = patternSize - 64;
+                }
+
+                return source.Substring(startIdx, 64);
+            }
         }
 
         public static string RemoveFirstLongestOccurrence(string source, string pattern) 
