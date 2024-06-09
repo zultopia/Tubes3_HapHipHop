@@ -68,12 +68,12 @@
 
         <!-- Biodata hasil pencarian -->
         <TextBlock Text="{Binding SearchResultBioData}" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,260,350,0"
-            Width="300" TextWrapping="Wrap"/>
+            Width="300" TextWrapping="Wrap" FontSize="20" FontWeight="Bold"/>
 
         <!-- Waktu pencarian dan persentase kecocokan -->
-        <StackPanel HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="200,0,0,100">
-            <TextBlock Text="{Binding SearchTime}" Margin="0,0,0,10"/>
-            <TextBlock Text="{Binding MatchPercentage}"/>
+        <StackPanel HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="200,0,0,80">
+            <TextBlock Text="{Binding SearchTime}" Margin="0,0,0,10" FontSize="17" FontWeight="Bold"/>
+            <TextBlock Text="{Binding MatchPercentage}" FontSize="17" FontWeight="Bold"/>
         </StackPanel>
 
     </Grid>

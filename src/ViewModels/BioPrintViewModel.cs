@@ -135,15 +135,15 @@ namespace HapHipHop.ViewModels
             {
                 SearchResultImage = new Bitmap(result.bestPath);
                 SearchResultBioData = result.biodata.ToString();
-                SearchTime = $"Time: {result.time} ms";
-                MatchPercentage = $"Match Percentage: {result.percentage:F2}%";
+                SearchTime = $"Waktu Eksekusi: {result.time} ms";
+                MatchPercentage = $"Persentase Kecocokan: {result.percentage:F2}%";
             }
             else
             {
                 SearchResultImage = null;
-                SearchResultBioData = "No match found";
-                SearchTime = "Time: 0 ms";
-                MatchPercentage = "Match Percentage: 0 %";
+                SearchResultBioData = "❌ No match found! ❌";
+                SearchTime = "Waktu Eksekusi: 0 ms";
+                MatchPercentage = "Persentase Kecocokan: 0 %";
             }
         }
     }
