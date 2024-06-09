@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Npgsql;
+using Avalonia.Media.Imaging;
 
 namespace HapHipHop.Models
 {
@@ -27,26 +27,28 @@ namespace HapHipHop.Models
 
             public override string ToString()
             {
-                return $"NIK: {NIK}\n Nama: {Nama}\n Tempat Lahir: {TempatLahir}\n Tanggal Lahir: {TanggalLahir:yyyy-MM-dd}\n " +
-                       $"Jenis Kelamin: {JenisKelamin}\n Golongan Darah: {GolonganDarah}\n Alamat: {Alamat}\n Agama: {Agama}\n " +
-                       $"Status Perkawinan: {StatusPerkawinan}\n Pekerjaan: {Pekerjaan}\n Kewarganegaraan: {Kewarganegaraan}";
+                return $"NIK: {NIK}\nNama: {Nama}\nTempat Lahir: {TempatLahir}\nTanggal Lahir: {TanggalLahir:yyyy-MM-dd}\n" +
+                       $"Jenis Kelamin: {JenisKelamin}\nGolongan Darah: {GolonganDarah}\nAlamat: {Alamat}\nAgama: {Agama}\n" +
+                       $"Status Perkawinan: {StatusPerkawinan}\nPekerjaan: {Pekerjaan}\nKewarganegaraan: {Kewarganegaraan}";
             }
         }
 
         public static (string bestPath, Biodata biodata, double time, double percentage) ProcessFingerprintMatching(Bitmap inputImage, bool algorithmChoice)
         {
-            string logFilePath = "debug_log.txt";
-            string notFoundPath = "not_found.txt";
+            var basePath = AppDomain.CurrentDomain.BaseDirectory;
+            var relativePath = Path.Combine(basePath, "..", "..", "test");
+            var absolutePath = Path.GetFullPath(relativePath);
+            
+            if (!Directory.Exists(absolutePath))
+            {
+                Directory.CreateDirectory(absolutePath);
+            }
+
+            // string logFilePath = Path.Combine(absolutePath, "log.txt");
+            // string notFoundPath = Path.Combine(absolutePath, "notfound.txt");
 
             try
             {
-                string path = "E:/Kuliah Informatika/Semester 4/Strategi Algoritma/Tubes3_HapHipHop/test/SOCOFing/Real/1__M_Left_index_finger.BMP";
-                Avalonia.Media.Imaging.Bitmap dbImage = new Avalonia.Media.Imaging.Bitmap(path);
-                Bitmap dbImageBitmap = FingerprintConverter.ConvertAvaloniaBitmapToDrawingBitmap(dbImage);
-                string dbText = FingerprintConverter.ConvertImageToBinary(dbImageBitmap);
-                dbText = FingerprintConverter.ConvertBinaryToAscii(dbText);
-                File.AppendAllText("db.txt", dbText);
-
                 var imageFilesTask = Task.Run(() => LoadImageFilesFromDatabaseAsync());
                 var biodataListTask = Task.Run(() => LoadBiodataAsync());
 
@@ -60,14 +62,13 @@ namespace HapHipHop.Models
                     return (string.Empty, new Biodata(), 0, 0);
                 }
 
-                Bitmap temp = inputImage;
                 string inputPattern = FingerprintConverter.ConvertImageToBinary(inputImage);
                 inputPattern = FingerprintConverter.ConvertBinaryToAscii(inputPattern);
 
-                string toRemove = "ÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿø";
-                string pattern = FingerprintConverter.CleanPattern(inputPattern, toRemove);
-                File.AppendAllText("pattern.txt", pattern);
-                File.AppendAllText("inputpattern.txt", inputPattern);
+                string pattern = FingerprintConverter.CleanPattern(inputPattern, "ÿÿÿÿÿÿÿÿÿÿÿð");
+                pattern = FingerprintConverter.CleanPattern(inputPattern, "ÿ");
+                // File.AppendAllText(Path.Combine(absolutePath, "pattern.txt"), pattern);
+                // File.AppendAllText(Path.Combine(absolutePath, "inputpattern.txt"), inputPattern);
                 int algorithm = algorithmChoice ? 2 : 1;
 
                 string bestMatchOwner = "";
@@ -82,7 +83,7 @@ namespace HapHipHop.Models
                     {
                         if (!File.Exists(imageFile.imagePath))
                         {
-                            File.AppendAllText(notFoundPath, $"File not found: {imageFile.imagePath}\n");
+                            // File.AppendAllText(notFoundPath, $"File not found: {imageFile.imagePath}\n");
                             return (similarity: 0.0, ownerName: imageFile.ownerName, imagePath: imageFile.imagePath);
                         }
 
@@ -95,15 +96,15 @@ namespace HapHipHop.Models
                             if (algorithm == 1)
                             {
                                 var result = KMPAlgorithm.KMPSearch(pattern, dbText);
-                                similarity = result.positions.Count > 0 ? 1.0 : RegexString.CalculateSimilarity(inputPattern, dbText);
+                                similarity = result.positions.Count > 0 ? 1.0 : RegexString.CalculateSimilarity(pattern, dbText);
                             }
                             else if (algorithm == 2)
                             {
                                 var result = BMAlgorithm.BoyerMooreSearch(pattern, dbText);
-                                similarity = result.positions.Count > 0 ? 1.0 : RegexString.CalculateSimilarity(inputPattern, dbText);
+                                similarity = result.positions.Count > 0 ? 1.0 : RegexString.CalculateSimilarity(pattern, dbText);
                             }
 
-                            File.AppendAllText(logFilePath, $"Similarity: {similarity:P2} Owner: {imageFile.ownerName} Path: {imageFile.imagePath}\n");
+                            // File.AppendAllText(logFilePath, $"Similarity: {similarity:P2} Owner: {imageFile.ownerName} Path: {imageFile.imagePath}\n");
                             return (similarity, imageFile.ownerName, imageFile.imagePath);
                         }
                     }
@@ -126,7 +127,7 @@ namespace HapHipHop.Models
 
                 List<string> namaAlay = biodataList.Select(biodata => RegexString.ConvertAlayToOriginal(biodata.Nama)).ToList();
 
-                double similarityThreshold = 0.5;
+                double similarityThreshold = 0.7;
 
                 string bestMatch = RegexString.FindBestMatch(bestMatchOwner, namaAlay, similarityThreshold, out double similarity);
 
@@ -148,12 +149,10 @@ namespace HapHipHop.Models
                         if (RegexString.ConvertAlayToOriginal(biodata.Nama) == bestMatch)
                         {
                             bestBiodata = biodata;
+                            bestBiodata.Nama = bestMatchOwner;
                             break;
                         }
                     }
-                    // string best = FingerprintConverter.ConvertImageToBinary(new Bitmap(bestPath));
-                    // best = FingerprintConverter.ConvertBinaryToAscii(best);
-                    // File.AppendAllText("best.txt", best);
                     return (bestPath, bestBiodata, time, percentage);
                 }
             }
@@ -166,7 +165,7 @@ namespace HapHipHop.Models
         public static async Task<List<(string imagePath, string ownerName)>> LoadImageFilesFromDatabaseAsync()
         {
             var imageFiles = new List<(string imagePath, string ownerName)>();
-            string connectionString = "Host=localhost;Username=postgres;Password=3663;Database=tubes3_haphiphop";
+            string connectionString = "Host=localhost;Username=postgres;Password=3663;Database=Tubes3_HapHipHop";
             string query = "SELECT berkas_citra, nama FROM sidik_jari";
             var basePath = AppDomain.CurrentDomain.BaseDirectory;
             var relativePath = Path.Combine(basePath, "..", "..", "..", "..", "test");
@@ -194,7 +193,7 @@ namespace HapHipHop.Models
             }
             catch (Exception ex)
             {
-                // Handle exceptions
+                // exceptions
             }
 
             return imageFiles;
@@ -203,7 +202,7 @@ namespace HapHipHop.Models
         public static async Task<List<Biodata>> LoadBiodataAsync()
         {
             var biodataList = new List<Biodata>();
-            string connectionString = "Host=localhost;Username=postgres;Password=3663;Database=tubes3_haphiphop";
+            string connectionString = "Host=localhost;Username=postgres;Password=3663;Database=Tubes3_HapHipHop";
             string query = "SELECT nik, nama, tempat_lahir, tanggal_lahir, jenis_kelamin, golongan_darah, alamat, agama, status_perkawinan, pekerjaan, kewarganegaraan FROM biodata";
 
             try
@@ -219,17 +218,17 @@ namespace HapHipHop.Models
                             {
                                 var biodata = new Biodata
                                 {
-                                    NIK = reader.GetString(0),
-                                    Nama = reader.GetString(1),
-                                    TempatLahir = reader.GetString(2),
-                                    TanggalLahir = reader.GetDateTime(3),
+                                    NIK = SimpleAES.Decrypt(reader.GetString(0), "abcdefghijklmnop"),
+                                    Nama = SimpleAES.Decrypt(reader.GetString(1), "abcdefghijklmnop"),
+                                    TempatLahir = SimpleAES.Decrypt(reader.GetString(2), "abcdefghijklmnop"),
+                                    TanggalLahir = SimpleAES.DecryptDate(reader.GetString(3), "abcdefghijklmnop"),
                                     JenisKelamin = reader.GetString(4),
-                                    GolonganDarah = reader.GetString(5),
-                                    Alamat = reader.GetString(6),
-                                    Agama = reader.GetString(7),
+                                    GolonganDarah = SimpleAES.Decrypt(reader.GetString(5), "abcdefghijklmnop"),
+                                    Alamat = SimpleAES.Decrypt(reader.GetString(6), "abcdefghijklmnop"),
+                                    Agama = SimpleAES.Decrypt(reader.GetString(7), "abcdefghijklmnop"),
                                     StatusPerkawinan = reader.GetString(8),
-                                    Pekerjaan = reader.GetString(9),
-                                    Kewarganegaraan = reader.GetString(10)
+                                    Pekerjaan = SimpleAES.Decrypt(reader.GetString(9), "abcdefghijklmnop"),
+                                    Kewarganegaraan = SimpleAES.Decrypt(reader.GetString(10), "abcdefghijklmnop")
                                 };
                                 biodataList.Add(biodata);
                             }
@@ -239,7 +238,7 @@ namespace HapHipHop.Models
             }
             catch (Exception ex)
             {
-                // Handle exceptions
+                // exceptions
             }
 
             return biodataList;

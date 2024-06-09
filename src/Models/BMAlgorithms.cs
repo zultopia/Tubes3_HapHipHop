@@ -10,15 +10,14 @@ namespace HapHipHop.Models
       int m = pat.Length;
       int n = txt.Length;
 
-      // Return immediately if pattern is longer than text
       if (m > n)
       {
         return (new List<int>(), 0, new List<(int, int, char, char)>());
       }
 
       List<int> results = new List<int>();
-      int comparisons = 0; // Variable to count character comparisons
-      List<(int, int, char, char)> comparedCharacters = new List<(int, int, char, char)>(); // List to store compared characters with indices
+      int comparisons = 0;
+      List<(int, int, char, char)> comparedCharacters = new List<(int, int, char, char)>();
 
       int[] badChar = new int[256];
       BadCharHeuristic(pat, m, badChar);
@@ -30,8 +29,8 @@ namespace HapHipHop.Models
 
         while (j >= 0 && pat[j] == txt[s + j])
         {
-          comparisons++; // Increment comparison count
-          comparedCharacters.Add((s + j, j, txt[s + j], pat[j])); // Store compared characters with indices
+          comparisons++;
+          comparedCharacters.Add((s + j, j, txt[s + j], pat[j]));
           j--;
         }
 
@@ -42,8 +41,8 @@ namespace HapHipHop.Models
         }
         else
         {
-          comparisons++; // Increment comparison count
-          comparedCharacters.Add((s + j, j, txt[s + j], pat[j])); // Store compared characters with indices
+          comparisons++;
+          comparedCharacters.Add((s + j, j, txt[s + j], pat[j]));
           s += Math.Max(1, j - badChar[txt[s + j]]);
         }
       }

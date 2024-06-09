@@ -9,7 +9,7 @@ import base64
 db_config = {
     'dbname': 'Tubes3_HapHipHop',
     'user': 'postgres',
-    'password': 'mockingjay07',
+    'password': '3663',
     'host': 'localhost',
     'port': '5432'
 }

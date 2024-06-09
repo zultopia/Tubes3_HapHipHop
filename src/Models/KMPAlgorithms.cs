@@ -12,8 +12,8 @@ namespace HapHipHop.Models
 
             int[] lps = new int[M];
             int j = 0;
-            int comparisons = 0; // Variable to count character comparisons
-            List<(int, int, char, char)> comparedCharacters = new List<(int, int, char, char)>(); // List to store compared characters with indices
+            int comparisons = 0;
+            List<(int, int, char, char)> comparedCharacters = new List<(int, int, char, char)>();
 
             ComputeLPSArray(pat, M, lps);
 
@@ -21,8 +21,8 @@ namespace HapHipHop.Models
             List<int> results = new List<int>();
             while (i < N)
             {
-                comparisons++; // Increment comparison count
-                comparedCharacters.Add((i, j, txt[i], pat[j])); // Store compared characters with indices
+                comparisons++;
+                comparedCharacters.Add((i, j, txt[i], pat[j]));
                 if (pat[j] == txt[i])
                 {
                     j++;

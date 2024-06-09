@@ -24,6 +24,7 @@ namespace HapHipHop.ViewModels
         private bool _isKMPChecked;
         private Bitmap? _selectedImage;
         private Bitmap? _searchResultImage;
+        private string? _selectedImagePath;
         private string? _searchResultBioData;
         private string? _searchTime;
         private string? _matchPercentage;
@@ -52,6 +53,12 @@ namespace HapHipHop.ViewModels
             set => this.RaiseAndSetIfChanged(ref _searchResultImage, value);
         }
 
+        public string? SelectedImagePath
+        {
+            get => _selectedImagePath;
+            set => this.RaiseAndSetIfChanged(ref _selectedImagePath, value);
+        }
+
         public string? SearchResultBioData
         {
             get => _searchResultBioData;
@@ -75,7 +82,6 @@ namespace HapHipHop.ViewModels
             BioPrintCommand = ReactiveCommand.Create(OnBioPrintCommandExecute);
             PilihCitraCommand = ReactiveCommand.CreateFromTask(OnPilihCitraCommandExecute);
             SearchCommand = ReactiveCommand.CreateFromTask(OnSearchCommandExecuteAsync);
-            // SaveImageCommand = ReactiveCommand.CreateFromTask(OnSaveImageCommandExecuteAsync);
         }
 
         private void OnBioPrintCommandExecute()
@@ -103,12 +109,12 @@ namespace HapHipHop.ViewModels
             if (result != null && result.Length > 0)
             {
                 var filePath = result[0];
+                SelectedImagePath = filePath;
+                // File.AppendAllText("log.txt", filePath + "\n");
                 using (var stream = File.OpenRead(filePath))
                 {
                     SelectedImage = await Task.Run(() => Bitmap.DecodeToWidth(stream, 300));
                 }
-
-                SaveSelectedImage();
             }
         }
 
@@ -120,17 +126,8 @@ namespace HapHipHop.ViewModels
                 return;
             }
 
-            // var basePath = AppDomain.CurrentDomain.BaseDirectory;
-            // var relativePath = Path.Combine(basePath, "..", "..", "..", "..", "test");
-            // var absolutePath = Path.GetFullPath(relativePath);
-
-            // SearchResultImage = new Bitmap(Path.Combine(absolutePath, "SOCOFing/Real/1__M_Left_index_finger.BMP"));
-            // SearchResultBioData = "Owner: John Doe";
-            // SearchTime = "Time: 100 ms";
-            // MatchPercentage = "Match Percentage: 100 %";
-
-            var bitmapSelectedImage = FingerprintConverter.ConvertAvaloniaBitmapToDrawingBitmap(SelectedImage);
-            var result = Processing.ProcessFingerprintMatching(bitmapSelectedImage, IsBMChecked);
+            Bitmap SelectedImageBitmap = new Bitmap(SelectedImagePath);
+            var result = Processing.ProcessFingerprintMatching(SelectedImageBitmap, IsBMChecked);
 
             SearchResultBioData = result.bestPath;
 
@@ -147,26 +144,6 @@ namespace HapHipHop.ViewModels
                 SearchResultBioData = "No match found";
                 SearchTime = "Time: 0 ms";
                 MatchPercentage = "Match Percentage: 0 %";
-            }
-        }
-
-        private void SaveSelectedImage()
-        {
-            if (SelectedImage == null) return;
-
-            var basePath = AppDomain.CurrentDomain.BaseDirectory;
-            var relativePath = Path.Combine(basePath, "..", "..", "test");
-            var absolutePath = Path.GetFullPath(relativePath);
-            
-            if (!Directory.Exists(absolutePath))
-            {
-                Directory.CreateDirectory(absolutePath);
-            }
-
-            var filePath = Path.Combine(absolutePath, "input.BMP");
-            using (var fileStream = File.Create(filePath))
-            {
-                SelectedImage.Save(fileStream);
             }
         }
     }
