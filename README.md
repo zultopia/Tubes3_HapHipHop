@@ -61,8 +61,7 @@ Dokumentasi lengkap tentang program dapat dilihat pada [link berikut](https://do
 Dalam aplikasi program yang kami buat, kami melakukan enkripsi data pada tabel biodata. Enkripsi bertujuan untuk mengamankan informasi pribadi terkait orangnya. Enkripsi ini diimplementasikan menggunakan algoritma AES. Algoritma AES (Advanced Encryption Standard) adalah metode enkripsi blok simetrik yang digunakan untuk mengamankan data digital, bekerja dengan blok data 128 bit dan mendukung panjang kunci 128, 192, dan 256 bit. AES dikenal karena keamanan tinggi, kinerja cepat, fleksibilitas panjang kunci, dan penerimaan luas sebagai standar internasional, membuatnya andal dan efisien untuk berbagai aplikasi enkripsi data.
 
 ## Bonus Video
-Kami juga membuat video sebagai media dalam memahami aplikasi program ini lebih lanjut. Untuk melihat videonya bisa meng-klik [HapHipHop]
-() berikut. 
+Kami juga membuat video sebagai media dalam memahami aplikasi program ini lebih lanjut. Untuk melihat videonya bisa meng-klik [HapHipHop]() berikut. 
 
 <a name="features"></a>
 ## Features
