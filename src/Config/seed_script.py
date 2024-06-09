@@ -209,7 +209,7 @@ def seed_data():
         for i in range(600):
             nama = faker.name()
             for j in range(10):
-                berkas_citra = os.path.join(image_folder, f'{i+1}__M_{["Left", "Right"][j//5]}_{["thumb", "index", "middle", "ring", "little"][j%5]}_finger.BMP')
+                berkas_citra = os.path.join(image_folder, f'{i+1}__{["M", "F"][j//5]}_{["Left", "Right"][j//5]}_{["thumb", "index", "middle", "ring", "little"][j%5]}_finger.BMP')
                 sidik_jari_records.append((berkas_citra, nama))
 
             NIK = faker.random_number(digits=16, fix_len=True)
