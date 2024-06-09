@@ -126,8 +126,6 @@ namespace HapHipHop.ViewModels
                 return;
             }
 
-            SearchResultBioData = "Sedang mencari data yang cocok...";
-
             Bitmap SelectedImageBitmap = new Bitmap(SelectedImagePath);
             var result = Processing.ProcessFingerprintMatching(SelectedImageBitmap, IsBMChecked);
 
