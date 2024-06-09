@@ -83,7 +83,7 @@ namespace HapHipHop.Models
                     {
                         if (!File.Exists(imageFile.imagePath))
                         {
-                            File.AppendAllText(notFoundPath, $"File not found: {imageFile.imagePath}\n");
+                            // File.AppendAllText(notFoundPath, $"File not found: {imageFile.imagePath}\n");
                             return (similarity: 0.0, ownerName: imageFile.ownerName, imagePath: imageFile.imagePath);
                         }
 
@@ -104,7 +104,7 @@ namespace HapHipHop.Models
                                 similarity = result.positions.Count > 0 ? 1.0 : RegexString.CalculateSimilarity(pattern, dbText);
                             }
 
-                            File.AppendAllText(logFilePath, $"Similarity: {similarity:P2} Owner: {imageFile.ownerName} Path: {imageFile.imagePath}\n");
+                            // File.AppendAllText(logFilePath, $"Similarity: {similarity:P2} Owner: {imageFile.ownerName} Path: {imageFile.imagePath}\n");
                             return (similarity, imageFile.ownerName, imageFile.imagePath);
                         }
                     }
@@ -185,7 +185,6 @@ namespace HapHipHop.Models
                                 string imagePath = Path.Combine(absolutePath, reader.GetString(0));
                                 string ownerName = reader.GetString(1);
                                 imagePath = imagePath.Replace("/", "\\");
-                                File.AppendAllText("imagepath.txt", imagePath + "\n");
                                 imageFiles.Add((imagePath, ownerName));
                             }
                         }

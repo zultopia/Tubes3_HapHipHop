@@ -3,7 +3,7 @@ import psycopg2
 db_config = {
     'dbname': 'Tubes3_HapHipHop',
     'user': 'postgres',
-    'password': 'mockingjay07',
+    'password': '3663',
     'host': 'localhost',
     'port': '5432'
 }
@@ -17,7 +17,7 @@ def delete_data():
         WITH biodata_to_delete AS (
             SELECT ctid FROM biodata
             ORDER BY ctid
-            LIMIT 1200
+            LIMIT 1800
         )
         DELETE FROM biodata
         WHERE ctid IN (SELECT ctid FROM biodata_to_delete)
@@ -28,7 +28,7 @@ def delete_data():
         WITH sidik_jari_to_delete AS (
             SELECT ctid FROM sidik_jari
             ORDER BY ctid
-            LIMIT 12000
+            LIMIT 12705
         )
         DELETE FROM sidik_jari
         WHERE ctid IN (SELECT ctid FROM sidik_jari_to_delete)

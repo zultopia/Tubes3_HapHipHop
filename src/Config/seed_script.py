@@ -200,42 +200,60 @@ def generate_alay_name(name, max_length=50):
 conn = psycopg2.connect(**db_config)
 cursor = conn.cursor()
 
-image_folder = 'SOCOFing/Real/'
+image_folder = '../../test/SOCOFing/Real/'
 
 def seed_data():
     try:
         sidik_jari_records = []
         biodata_records = []
-        for i in range(600):
-            nama = faker.name()
-            for j in range(10):
-                berkas_citra = os.path.join(image_folder, f'{i+1}__{["M", "F"][j//5]}_{["Left", "Right"][j//5]}_{["thumb", "index", "middle", "ring", "little"][j%5]}_finger.BMP')
+        
+        # Get list of files in the image folder
+        image_files = os.listdir(image_folder)
+        
+        # Dictionary to store people by their image number prefix
+        people = {}
+
+        for image_file in image_files:
+            if image_file.endswith('.BMP'):
+                # Extract the number prefix from the file name
+                number_prefix = image_file.split('__')[0]
+                
+                # Check if this prefix already has a person assigned
+                if number_prefix not in people:
+                    # Create a new person for this prefix
+                    nama = faker.name()
+                    NIK = faker.random_number(digits=16, fix_len=True)
+                    nama_alay = generate_alay_name(nama)
+                    tempat_lahir = faker.city()
+                    tanggal_lahir = faker.date_of_birth(minimum_age=18, maximum_age=60)
+                    jenis_kelamin = random.choice(['Laki-Laki', 'Perempuan'])
+                    golongan_darah = random.choice(['A', 'B', 'AB', 'O'])
+                    alamat = faker.address().replace('\n', ', ')
+                    agama = random.choice(['Islam', 'Kristen', 'Katholik', 'Hindu', 'Buddha', 'Konghucu'])
+                    status_perkawinan = random.choice(['Belum Menikah', 'Menikah', 'Cerai'])
+                    pekerjaan = faker.job()
+                    kewarganegaraan = faker.country()
+
+                    key = "abcdefghijklmnop"
+                    NIK_enc = Encrypt(str(NIK), key)
+                    Nama_enc = Encrypt(nama_alay, key)
+                    Tempat_Lahir_enc = Encrypt(tempat_lahir, key)
+                    Tanggal_Lahir_enc = EncryptDate(tanggal_lahir, key)
+                    Goldar_enc = Encrypt(golongan_darah, key)
+                    Alamat_enc = Encrypt(alamat, key)
+                    Agama_enc = Encrypt(agama, key)
+                    Pekerjaan_enc = Encrypt(pekerjaan, key)
+                    Kewarganegaraan_enc = Encrypt(kewarganegaraan, key)
+
+                    biodata_records.append((NIK_enc, Nama_enc, Tempat_Lahir_enc, Tanggal_Lahir_enc, jenis_kelamin, Goldar_enc, Alamat_enc, Agama_enc, status_perkawinan, Pekerjaan_enc, Kewarganegaraan_enc))
+
+                    # Store the person's data in the dictionary
+                    people[number_prefix] = nama
+
+                # Assign the file to the person
+                nama = people[number_prefix]
+                berkas_citra = os.path.join("SOCOFing\Real", image_file)
                 sidik_jari_records.append((berkas_citra, nama))
-
-            NIK = faker.random_number(digits=16, fix_len=True)
-            nama_alay = generate_alay_name(nama)
-            tempat_lahir = faker.city()
-            tanggal_lahir = faker.date_of_birth(minimum_age=18, maximum_age=60)
-            jenis_kelamin = random.choice(['Laki-Laki', 'Perempuan'])
-            golongan_darah = random.choice(['A', 'B', 'AB', 'O'])
-            alamat = faker.address().replace('\n', ', ')
-            agama = random.choice(['Islam', 'Kristen', 'Katholik', 'Hindu', 'Buddha', 'Konghucu'])
-            status_perkawinan = random.choice(['Belum Menikah', 'Menikah', 'Cerai'])
-            pekerjaan = faker.job()
-            kewarganegaraan = faker.country()
-
-            key = "abcdefghijklmnop"
-            NIK_enc = Encrypt(str(NIK), key)
-            Nama_enc = Encrypt(nama_alay, key)
-            Tempat_Lahir_enc = Encrypt(tempat_lahir, key)
-            Tanggal_Lahir_enc = EncryptDate(tanggal_lahir, key)
-            Goldar_enc = Encrypt(golongan_darah, key)
-            Alamat_enc = Encrypt(alamat, key)
-            Agama_enc = Encrypt(agama, key)
-            Pekerjaan_enc = Encrypt(pekerjaan, key)
-            Kewarganegaraan_enc = Encrypt(kewarganegaraan, key)
-            
-            biodata_records.append((NIK_enc, Nama_enc, Tempat_Lahir_enc, Tanggal_Lahir_enc, jenis_kelamin, Goldar_enc, Alamat_enc, Agama_enc, status_perkawinan, Pekerjaan_enc, Kewarganegaraan_enc))
 
         insert_sidik_jari_query = '''
         INSERT INTO sidik_jari (berkas_citra, nama)
@@ -257,5 +275,5 @@ def seed_data():
     finally:
         cursor.close()
         conn.close()
-
+        
 seed_data()
