@@ -75,6 +75,7 @@ namespace HapHipHop.ViewModels
             BioPrintCommand = ReactiveCommand.Create(OnBioPrintCommandExecute);
             PilihCitraCommand = ReactiveCommand.CreateFromTask(OnPilihCitraCommandExecute);
             SearchCommand = ReactiveCommand.CreateFromTask(OnSearchCommandExecuteAsync);
+            // SaveImageCommand = ReactiveCommand.CreateFromTask(OnSaveImageCommandExecuteAsync);
         }
 
         private void OnBioPrintCommandExecute()
@@ -95,7 +96,7 @@ namespace HapHipHop.ViewModels
                 }
             };
 
-            var window = new Window();  
+            var window = new Window();
 
             var result = await openFileDialog.ShowAsync(window);
 
@@ -106,6 +107,8 @@ namespace HapHipHop.ViewModels
                 {
                     SelectedImage = await Task.Run(() => Bitmap.DecodeToWidth(stream, 300));
                 }
+
+                SaveSelectedImage();
             }
         }
 
@@ -144,6 +147,26 @@ namespace HapHipHop.ViewModels
                 SearchResultBioData = "No match found";
                 SearchTime = "Time: 0 ms";
                 MatchPercentage = "Match Percentage: 0 %";
+            }
+        }
+
+        private void SaveSelectedImage()
+        {
+            if (SelectedImage == null) return;
+
+            var basePath = AppDomain.CurrentDomain.BaseDirectory;
+            var relativePath = Path.Combine(basePath, "..", "..", "test");
+            var absolutePath = Path.GetFullPath(relativePath);
+            
+            if (!Directory.Exists(absolutePath))
+            {
+                Directory.CreateDirectory(absolutePath);
+            }
+
+            var filePath = Path.Combine(absolutePath, "input.BMP");
+            using (var fileStream = File.Create(filePath))
+            {
+                SelectedImage.Save(fileStream);
             }
         }
     }
