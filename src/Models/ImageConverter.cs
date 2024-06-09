@@ -60,23 +60,23 @@ namespace HapHipHop.Models
             return asciiStringBuilder.ToString();
         }
 
-        public static Bitmap CropImageWithPadding(Bitmap image, int removeWidth, int removeHeight)
-        {
-            int width = image.Width;
-            int height = image.Height;
+        // public static Bitmap CropImageWithPadding(Bitmap image, int removeWidth, int removeHeight)
+        // {
+        //     int width = image.Width;
+        //     int height = image.Height;
 
-            int newWidth = width - 2 * removeWidth;
-            int newHeight = height - 2 * removeHeight;
+        //     int newWidth = width - 2 * removeWidth;
+        //     int newHeight = height - 2 * removeHeight;
 
-            Bitmap croppedImage = new Bitmap(newWidth, newHeight);
+        //     Bitmap croppedImage = new Bitmap(newWidth, newHeight);
 
-            using (Graphics g = Graphics.FromImage(croppedImage))
-            {
-                g.DrawImage(image, new Rectangle(0, 0, newWidth, newHeight), new Rectangle(removeWidth, removeHeight, newWidth, newHeight), GraphicsUnit.Pixel);
-            }
+        //     using (Graphics g = Graphics.FromImage(croppedImage))
+        //     {
+        //         g.DrawImage(image, new Rectangle(0, 0, newWidth, newHeight), new Rectangle(removeWidth, removeHeight, newWidth, newHeight), GraphicsUnit.Pixel);
+        //     }
 
-            return croppedImage;
-        }
+        //     return croppedImage;
+        // }
 
         public static string CleanPattern(string source, string pattern)
         {
@@ -126,43 +126,6 @@ namespace HapHipHop.Models
             
             source = source.Remove(startIndex);
             return source;
-        }
-
-        // Method to handle System.Drawing.Bitmap
-        public static System.Drawing.Bitmap CropImageWithPadding(System.Drawing.Bitmap image, int padding)
-        {
-            return CropImageWithPaddingInternal(image, padding);
-        }
-
-        // Method to handle Avalonia.Media.Imaging.Bitmap
-        public static Avalonia.Media.Imaging.Bitmap CropImageWithPadding(Avalonia.Media.Imaging.Bitmap image, int padding)
-        {
-            var drawingBitmap = ConvertAvaloniaBitmapToDrawingBitmap(image);
-            var croppedBitmap = CropImageWithPaddingInternal(drawingBitmap, padding);
-            return ConvertDrawingBitmapToAvaloniaBitmap(croppedBitmap);
-        }
-
-        private static System.Drawing.Bitmap CropImageWithPaddingInternal(System.Drawing.Bitmap image, int padding)
-        {
-            int width = image.Width;
-            int height = image.Height;
-
-            // Ensure padding does not exceed image size
-            padding = Math.Min(padding, Math.Min(width / 2, height / 2));
-
-            // Determine new image dimensions
-            int newWidth = width - 2 * padding;
-            int newHeight = height - 2 * padding;
-
-            // Create a new bitmap to hold the cropped image
-            System.Drawing.Bitmap croppedImage = new System.Drawing.Bitmap(newWidth, newHeight);
-
-            using (Graphics g = Graphics.FromImage(croppedImage))
-            {
-                g.DrawImage(image, new Rectangle(0, 0, newWidth, newHeight), new Rectangle(padding, padding, newWidth, newHeight), GraphicsUnit.Pixel);
-            }
-
-            return croppedImage;
         }
 
         // Conversion methods between Avalonia Bitmap and System.Drawing.Bitmap

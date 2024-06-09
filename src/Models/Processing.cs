@@ -27,38 +27,47 @@ namespace HapHipHop.Models
 
             public override string ToString()
             {
-                return $"NIK: {NIK}, Nama: {Nama}, Tempat Lahir: {TempatLahir}, Tanggal Lahir: {TanggalLahir:yyyy-MM-dd}, " +
-                       $"Jenis Kelamin: {JenisKelamin}, Golongan Darah: {GolonganDarah}, Alamat: {Alamat}, Agama: {Agama}, " +
-                       $"Status Perkawinan: {StatusPerkawinan}, Pekerjaan: {Pekerjaan}, Kewarganegaraan: {Kewarganegaraan}";
+                return $"NIK: {NIK}\n Nama: {Nama}\n Tempat Lahir: {TempatLahir}\n Tanggal Lahir: {TanggalLahir:yyyy-MM-dd}\n " +
+                       $"Jenis Kelamin: {JenisKelamin}\n Golongan Darah: {GolonganDarah}\n Alamat: {Alamat}\n Agama: {Agama}\n " +
+                       $"Status Perkawinan: {StatusPerkawinan}\n Pekerjaan: {Pekerjaan}\n Kewarganegaraan: {Kewarganegaraan}";
             }
         }
 
-        public static async Task<(string bestPath, Biodata biodata, double time, double percentage)> ProcessFingerprintMatchingAsync(Bitmap inputImage, bool algorithmChoice)
+        public static (string bestPath, Biodata biodata, double time, double percentage) ProcessFingerprintMatching(Bitmap inputImage, bool algorithmChoice)
         {
-            // Initialize logging
-            // string logFilePath = "debug_log.txt";
-            // File.WriteAllText(logFilePath, "Starting ProcessFingerprintMatchingAsync\n");
+            string logFilePath = "debug_log.txt";
+            string notFoundPath = "not_found.txt";
 
             try
             {
-                var loadImageTask = LoadImageFilesFromDatabaseAsync();
-                var loadBiodataTask = LoadBiodataAsync();
+                string path = "E:/Kuliah Informatika/Semester 4/Strategi Algoritma/Tubes3_HapHipHop/test/SOCOFing/Real/1__M_Left_index_finger.BMP";
+                Avalonia.Media.Imaging.Bitmap dbImage = new Avalonia.Media.Imaging.Bitmap(path);
+                Bitmap dbImageBitmap = FingerprintConverter.ConvertAvaloniaBitmapToDrawingBitmap(dbImage);
+                string dbText = FingerprintConverter.ConvertImageToBinary(dbImageBitmap);
+                dbText = FingerprintConverter.ConvertBinaryToAscii(dbText);
+                File.AppendAllText("db.txt", dbText);
 
-                await Task.WhenAll(loadImageTask, loadBiodataTask);
+                var imageFilesTask = Task.Run(() => LoadImageFilesFromDatabaseAsync());
+                var biodataListTask = Task.Run(() => LoadBiodataAsync());
 
-                var imageFiles = loadImageTask.Result;
-                var biodataList = loadBiodataTask.Result;
+                Task.WaitAll(imageFilesTask, biodataListTask);
+
+                var imageFiles = imageFilesTask.Result;
+                var biodataList = biodataListTask.Result;
 
                 if (inputImage == null)
                 {
                     return (string.Empty, new Biodata(), 0, 0);
                 }
 
+                Bitmap temp = inputImage;
                 string inputPattern = FingerprintConverter.ConvertImageToBinary(inputImage);
                 inputPattern = FingerprintConverter.ConvertBinaryToAscii(inputPattern);
 
-                string toRemove = "ÿÿÿÿÿÿÿÿÿÿÿð";
+                string toRemove = "ÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿø";
                 string pattern = FingerprintConverter.CleanPattern(inputPattern, toRemove);
+                File.AppendAllText("pattern.txt", pattern);
+                File.AppendAllText("inputpattern.txt", inputPattern);
                 int algorithm = algorithmChoice ? 2 : 1;
 
                 string bestMatchOwner = "";
@@ -67,13 +76,13 @@ namespace HapHipHop.Models
 
                 Stopwatch stopwatch = Stopwatch.StartNew();
 
-                var tasks = imageFiles.Select(imageFile => Task.Run(() =>
+                var tasks = imageFiles.AsParallel().Select(imageFile =>
                 {
                     try
                     {
                         if (!File.Exists(imageFile.imagePath))
                         {
-                            // File.AppendAllText(logFilePath, $"Error: {imageFile.imagePath} not found\n");
+                            File.AppendAllText(notFoundPath, $"File not found: {imageFile.imagePath}\n");
                             return (similarity: 0.0, ownerName: imageFile.ownerName, imagePath: imageFile.imagePath);
                         }
 
@@ -86,28 +95,27 @@ namespace HapHipHop.Models
                             if (algorithm == 1)
                             {
                                 var result = KMPAlgorithm.KMPSearch(pattern, dbText);
-                                similarity = RegexString.CalculateSimilarity(pattern, dbText);
+                                similarity = result.positions.Count > 0 ? 1.0 : RegexString.CalculateSimilarity(inputPattern, dbText);
                             }
                             else if (algorithm == 2)
                             {
                                 var result = BMAlgorithm.BoyerMooreSearch(pattern, dbText);
-                                similarity = RegexString.CalculateSimilarity(pattern, dbText);
+                                similarity = result.positions.Count > 0 ? 1.0 : RegexString.CalculateSimilarity(inputPattern, dbText);
                             }
 
-                            File.AppendAllText(logFilePath, $"Owner: {imageFile.ownerName}, Path: {imageFile.imagePath}, Similarity: {similarity * 100}%\n");
+                            File.AppendAllText(logFilePath, $"Similarity: {similarity:P2} Owner: {imageFile.ownerName} Path: {imageFile.imagePath}\n");
                             return (similarity, imageFile.ownerName, imageFile.imagePath);
                         }
                     }
-                    catch (Exception ex)
+                    catch (Exception)
                     {
                         return (similarity: 0.0, ownerName: imageFile.ownerName, imagePath: imageFile.imagePath);
                     }
-                })).ToArray();
+                }).ToArray();
 
-                var results = await Task.WhenAll(tasks);
-
-                foreach (var result in results)
+                foreach (var task in tasks)
                 {
+                    var result = task;
                     if (result.similarity > highestSimilarity)
                     {
                         highestSimilarity = result.similarity;
@@ -116,12 +124,7 @@ namespace HapHipHop.Models
                     }
                 }
 
-                List<string> namaAlay = new List<string>();
-                foreach (var biodata in biodataList)
-                {
-                    string convertedName = RegexString.ConvertAlayToOriginal(biodata.Nama);
-                    namaAlay.Add(convertedName);
-                }
+                List<string> namaAlay = biodataList.Select(biodata => RegexString.ConvertAlayToOriginal(biodata.Nama)).ToList();
 
                 double similarityThreshold = 0.5;
 
@@ -136,7 +139,6 @@ namespace HapHipHop.Models
 
                 if (highestSimilarity < similarityThreshold)
                 {
-                    // File.AppendAllText(logFilePath, "No match found\n");
                     return (string.Empty, new Biodata(), time, percentage);
                 }
                 else
@@ -149,14 +151,14 @@ namespace HapHipHop.Models
                             break;
                         }
                     }
-
-                    // File.AppendAllText(logFilePath, $"Best match: {bestBiodata.Nama}, Path: {bestPath}, Time: {time} ms, Similarity: {percentage}%\n");
+                    // string best = FingerprintConverter.ConvertImageToBinary(new Bitmap(bestPath));
+                    // best = FingerprintConverter.ConvertBinaryToAscii(best);
+                    // File.AppendAllText("best.txt", best);
                     return (bestPath, bestBiodata, time, percentage);
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                File.AppendAllText(logFilePath, $"Error: {ex.Message}\n");
                 return (string.Empty, new Biodata(), 0, 0);
             }
         }

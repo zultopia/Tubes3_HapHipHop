@@ -127,7 +127,7 @@ namespace HapHipHop.ViewModels
             // MatchPercentage = "Match Percentage: 100 %";
 
             var bitmapSelectedImage = FingerprintConverter.ConvertAvaloniaBitmapToDrawingBitmap(SelectedImage);
-            var result = await Processing.ProcessFingerprintMatchingAsync(bitmapSelectedImage, IsBMChecked);
+            var result = Processing.ProcessFingerprintMatching(bitmapSelectedImage, IsBMChecked);
 
             SearchResultBioData = result.bestPath;
 
