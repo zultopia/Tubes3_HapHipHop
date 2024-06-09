@@ -13,7 +13,6 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("HapHipHop")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+af12025b1ff08f001b668f231c98aeb9050b475b")]
 [assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c0bc7d228dac747386a70ae24df3e4d834178499")]
 [assembly: System.Reflection.AssemblyProductAttribute("HapHipHop")]
 [assembly: System.Reflection.AssemblyTitleAttribute("HapHipHop")]
