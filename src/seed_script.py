@@ -1,3 +1,4 @@
+import datetime
 import psycopg2
 import random
 import os
@@ -142,6 +143,14 @@ def Decrypt(cipher_text, key):
 
     return plain_bytes.decode('utf-8').rstrip('\x00')
 
+def EncryptDate(date, key):
+    date_string = date.strftime('%Y-%m-%d')
+    return Encrypt(date_string, key)
+
+def DecryptDate(cipher_text, key):
+    date_string = Decrypt(cipher_text, key)
+    return datetime.strptime(date_string, '%Y-%m-%d')
+
 def generate_alay_name(name, max_length=50):
     substitutions = {
         'a': ['4', '@'],
@@ -156,25 +165,34 @@ def generate_alay_name(name, max_length=50):
         't': ['7'],
         'b': ['8']
     }
-    
+
+    def substitute_char(char):
+        return random.choice(substitutions.get(char.lower(), [char]))
+
     alay_name = ''.join(
-        random.choice(substitutions.get(char.lower(), [char])).upper() if random.random() < 0.5 else 
-        random.choice(substitutions.get(char.lower(), [char])).lower() 
+        substitute_char(char).upper() if random.random() < 0.5 else substitute_char(char).lower()
         for char in name
     )
     
-    if random.random() < 0.3:
+    def shorten_vowels(text):
         vowels = 'aeiouAEIOU'
-        alay_name = ''.join([char for char in alay_name if char in vowels])
-
+        shortened = []
+        for i, char in enumerate(text):
+            if char.lower() in vowels and random.random() < 0.5:
+                continue  
+            shortened.append(char)
+        return ''.join(shortened)
+    
+    alay_name = shorten_vowels(alay_name)
+    
     alay_name = alay_name[:max_length]
 
     while not alay_name.strip():
         alay_name = ''.join(
-            random.choice(substitutions.get(char.lower(), [char])).upper() if random.random() < 0.5 else 
-            random.choice(substitutions.get(char.lower(), [char])).lower() 
+            substitute_char(char).upper() if random.random() < 0.5 else substitute_char(char).lower()
             for char in name
         )
+        alay_name = shorten_vowels(alay_name)
         alay_name = alay_name[:max_length]
     
     return alay_name
@@ -197,7 +215,7 @@ def seed_data():
             NIK = faker.random_number(digits=16, fix_len=True)
             nama_alay = generate_alay_name(nama)
             tempat_lahir = faker.city()
-            tanggal_lahir = faker.date_of_birth(minimum_age=18, maximum_age=60).strftime('%Y-%m-%d')
+            tanggal_lahir = faker.date_of_birth(minimum_age=18, maximum_age=60)
             jenis_kelamin = random.choice(['Laki-Laki', 'Perempuan'])
             golongan_darah = random.choice(['A', 'B', 'AB', 'O'])
             alamat = faker.address().replace('\n', ', ')
@@ -210,7 +228,7 @@ def seed_data():
             NIK_enc = Encrypt(str(NIK), key)
             Nama_enc = Encrypt(nama_alay, key)
             Tempat_Lahir_enc = Encrypt(tempat_lahir, key)
-            Tanggal_Lahir_enc = Encrypt(tanggal_lahir, key)
+            Tanggal_Lahir_enc = EncryptDate(tanggal_lahir, key)
             Goldar_enc = Encrypt(golongan_darah, key)
             Alamat_enc = Encrypt(alamat, key)
             Agama_enc = Encrypt(agama, key)

@@ -43,29 +43,74 @@
   </strong>
 </div>
 
+## Table of Contents
+1. [Deskripsi Program](#deskripsi-program)
+2. [Bonus Enkripsi](#bonus-enkripsi)
+3. [Bonus Video](#bonus-video) 
+4. [Features](#features)
+5. [Getting Started](#getting-started)
+6. [How-to-Run](#how-to-run)
+7. [Tampilan Program](#tampilan)
+
 ## Deskripsi Program
 
-Dokumentasi lengkap tentang program dapat dilihat pada [link berikut]()
+Program ini merupakan desktop app program yang dibuat dengan bahasa C#. Pada program ini, pengguna dapat memasukkan berkas citra berisi potongan gambar sidik jari. Nantinya akan dicari biodata dan sidik jari yang cocok dengan potongan gambar tersebut dengan memilih penggunaan algoritma antara Knuth Morris Prath dan Boyer Moore. Pencarian data yang cocok menggunakan pattern matching. Biodata pemilik sidik-jari bertujuan untuk mengetahui data informasi seperti yang tertera pada KTP. 
+Dokumentasi lengkap tentang program dapat dilihat pada [link berikut](https://docs.google.com/document/d/1BHsjquNVL7-zK9WrRMB3IXFajNfWBN4aMshg5CqlR2Q/edit?usp=sharing)
    
 ## Bonus Enkripsi
+Dalam aplikasi program yang kami buat, kami melakukan enkripsi data pada tabel biodata. Enkripsi bertujuan untuk mengamankan informasi pribadi terkait orangnya. Enkripsi ini diimplementasikan menggunakan algoritma AES. Algoritma AES (Advanced Encryption Standard) adalah metode enkripsi blok simetrik yang digunakan untuk mengamankan data digital, bekerja dengan blok data 128 bit dan mendukung panjang kunci 128, 192, dan 256 bit. AES dikenal karena keamanan tinggi, kinerja cepat, fleksibilitas panjang kunci, dan penerimaan luas sebagai standar internasional, membuatnya andal dan efisien untuk berbagai aplikasi enkripsi data.
 
 ## Bonus Video
+Kami juga membuat video sebagai media dalam memahami aplikasi program ini lebih lanjut. Untuk melihat videonya bisa meng-klik [HapHipHop]
+() berikut. 
 
-## Setup and Installation
+<a name="features"></a>
+## Features
+Berikut merupakan fitur dari program kami:
+* Visualisasi aplikasi yang membuat menarik
+* Gambar sidik-jari yang ingin dicocokan dan sidik jari yang cocok
+* Toggle switch untuk memilih algoritma KMP atau BM
+* Tampilan biodata dari sidik-jari yang cocok
 
-1. Clone repo
+<a name="getting started"></a>
+## Getting Started!
+
+Berikut merupakan cara untuk build project atau menginstall program
+
+1. Clone repo menggunakan command berikut
 
 ```
-git clone git@github.com:zultopia/Tubes3_HapHipHop.git
+git clone https://github.com/zultopia/Tubes3_HapHipHop.git 
 ```
 
-2. Compile the program
+2. Setelah masuk ke folder program, jalankan perintah berikut untuk compile program utama!
 
-Buka terminal pada folder project, lalu jalankan perintah
+Untuk windows:
 ```
-cd src
-dotnet run
+dotnet publish -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true
 ```
+Untuk LINUX:
+```
+dotnet publish -c Release -r linux-x64 --self-contained true -p:PublishSingleFile=true
+```
+Untuk MACOS:
+```
+dotnet publish -c Release -r osx-x64 --self-contained true -p:PublishSingleFile=true
+```
+
+## How-to-Run
+
+Bagaimana cara menjalankan program? Gunakan command berikut pada folder program untuk menjalankan program utama
+
+```
+bin/hapHipHop
+```
+Kami juga menyediakan build yang sudah dapat Anda gunakan langsung. Pada folder bin, terdapat executable zip untuk MACOS dan Windows. Unzip file yang sesuai dengan sistem operasi kamu, dan jalankan file hapHipHop! Setelah itu, ikuti petunjuk pada program. 
+
+     
+<a name="tampilan"></a>
+## Tampilan Program
+
 
 <!-- LICENSE -->
 ## Licensing

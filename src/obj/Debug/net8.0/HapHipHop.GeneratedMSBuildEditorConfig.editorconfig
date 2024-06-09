@@ -13,15 +13,15 @@ build_property.PlatformNeutralAssembly =
 build_property.EnforceExtendedAnalyzerRules = 
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = HapHipHop
-build_property.ProjectDir = /Users/azulsuhada/Documents/Semester4/Stima/Tubes-3-Stima/Tubes3_HapHipHop/src/
+build_property.ProjectDir = E:\Kuliah Informatika\Semester 4\Strategi Algoritma\Tubes3_HapHipHop\src\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 
-[/Users/azulsuhada/Documents/Semester4/Stima/Tubes-3-Stima/Tubes3_HapHipHop/src/App.axaml]
+[E:/Kuliah Informatika/Semester 4/Strategi Algoritma/Tubes3_HapHipHop/src/App.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
-[/Users/azulsuhada/Documents/Semester4/Stima/Tubes-3-Stima/Tubes3_HapHipHop/src/Views/BioPrint.axaml]
+[E:/Kuliah Informatika/Semester 4/Strategi Algoritma/Tubes3_HapHipHop/src/Views/BioPrint.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
-[/Users/azulsuhada/Documents/Semester4/Stima/Tubes-3-Stima/Tubes3_HapHipHop/src/Views/MainWindow.axaml]
+[E:/Kuliah Informatika/Semester 4/Strategi Algoritma/Tubes3_HapHipHop/src/Views/MainWindow.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml

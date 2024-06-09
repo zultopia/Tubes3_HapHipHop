@@ -4,10 +4,13 @@ using System.IO;
 using System.Reactive;
 using System.Windows.Input;
 using HapHipHop.Views;
+using HapHipHop.Models;
 using Avalonia.Controls;
 using Avalonia.Media.Imaging;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 
 namespace HapHipHop.ViewModels
 {
@@ -71,7 +74,7 @@ namespace HapHipHop.ViewModels
         {
             BioPrintCommand = ReactiveCommand.Create(OnBioPrintCommandExecute);
             PilihCitraCommand = ReactiveCommand.CreateFromTask(OnPilihCitraCommandExecute);
-            SearchCommand = ReactiveCommand.Create(OnSearchCommandExecute);
+            SearchCommand = ReactiveCommand.CreateFromTask(OnSearchCommandExecuteAsync);
         }
 
         private void OnBioPrintCommandExecute()
@@ -106,57 +109,41 @@ namespace HapHipHop.ViewModels
             }
         }
 
-        private void OnSearchCommandExecute()
+        private async Task OnSearchCommandExecuteAsync()
         {
-            if (IsBMChecked)
+            if (SelectedImage == null)
             {
-                // Algoritma BM
-                Console.WriteLine("SearchCommand executed - Using BM algorithm");
+                SearchResultBioData = "Please select an image first.";
+                return;
+            }
 
-                // Implementasi Algoritma BM
+            // var basePath = AppDomain.CurrentDomain.BaseDirectory;
+            // var relativePath = Path.Combine(basePath, "..", "..", "..", "..", "test");
+            // var absolutePath = Path.GetFullPath(relativePath);
 
-                var basePath = AppDomain.CurrentDomain.BaseDirectory;
-                var relativePath = Path.Combine(basePath, "..", "..", "..", "ViewModels", "1__M_Left_index_finger.BMP");
-                var absolutePath = Path.GetFullPath(relativePath);
+            // SearchResultImage = new Bitmap(Path.Combine(absolutePath, "SOCOFing/Real/1__M_Left_index_finger.BMP"));
+            // SearchResultBioData = "Owner: John Doe";
+            // SearchTime = "Time: 100 ms";
+            // MatchPercentage = "Match Percentage: 100 %";
 
-                if (File.Exists(absolutePath))
-                {
-                    SearchResultImage = new Bitmap(absolutePath);
-                    Console.WriteLine("Gambar ditemukan dan dimuat: " + absolutePath);
-                }
-                else
-                {
-                    Console.WriteLine("Gambar tidak ditemukan: " + absolutePath);
-                }
+            var bitmapSelectedImage = FingerprintConverter.ConvertAvaloniaBitmapToDrawingBitmap(SelectedImage);
+            var result = await Processing.ProcessFingerprintMatchingAsync(bitmapSelectedImage, IsBMChecked);
 
-                SearchResultBioData = "Nama: Benjolmin\nUmur: 100\nJenis Kelamin: Laki-laki";
-                SearchTime = "Waktu Pencarian: 2 detik";
-                MatchPercentage = "Persentase Kecocokan: 95%";
+            SearchResultBioData = result.bestPath;
+
+            if (!string.IsNullOrEmpty(result.bestPath))
+            {
+                SearchResultImage = new Bitmap(result.bestPath);
+                SearchResultBioData = result.biodata.ToString();
+                SearchTime = $"Time: {result.time} ms";
+                MatchPercentage = $"Match Percentage: {result.percentage:F2}%";
             }
             else
             {
-                // Algoritma KMP
-                Console.WriteLine("SearchCommand executed - Using KMP algorithm");
-
-                // Implementasi Algoritma KMP
-
-                var basePath = AppDomain.CurrentDomain.BaseDirectory;
-                var relativePath = Path.Combine(basePath, "..", "..", "..", "ViewModels", "1__M_Left_index_finger.BMP");
-                var absolutePath = Path.GetFullPath(relativePath);
-
-                if (File.Exists(absolutePath))
-                {
-                    SearchResultImage = new Bitmap(absolutePath);
-                    Console.WriteLine("Gambar ditemukan dan dimuat: " + absolutePath);
-                }
-                else
-                {
-                    Console.WriteLine("Gambar tidak ditemukan: " + absolutePath);
-                }
-
-                SearchResultBioData = "Nama: Benjolmin\nUmur: 100\nJenis Kelamin: Laki-laki";
-                SearchTime = "Waktu Pencarian: 2 detik";
-                MatchPercentage = "Persentase Kecocokan: 95%";
+                SearchResultImage = null;
+                SearchResultBioData = "No match found";
+                SearchTime = "Time: 0 ms";
+                MatchPercentage = "Match Percentage: 0 %";
             }
         }
     }
