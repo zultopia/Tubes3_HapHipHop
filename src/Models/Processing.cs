@@ -96,12 +96,12 @@ namespace HapHipHop.Models
                             if (algorithm == 1)
                             {
                                 var result = KMPAlgorithm.KMPSearch(pattern, dbText);
-                                similarity = result.positions.Count > 0 ? 1.0 : RegexString.CalculateSimilarity(pattern, dbText);
+                                similarity = result.positions.Count > 0 ? 1.0 : RegexString.CalculateSimilarity(inputPattern, dbText);
                             }
                             else if (algorithm == 2)
                             {
                                 var result = BMAlgorithm.BoyerMooreSearch(pattern, dbText);
-                                similarity = result.positions.Count > 0 ? 1.0 : RegexString.CalculateSimilarity(pattern, dbText);
+                                similarity = result.positions.Count > 0 ? 1.0 : RegexString.CalculateSimilarity(inputPattern, dbText);
                             }
 
                             // File.AppendAllText(logFilePath, $"Similarity: {similarity:P2} Owner: {imageFile.ownerName} Path: {imageFile.imagePath}\n");

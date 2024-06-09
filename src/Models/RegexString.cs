@@ -104,7 +104,7 @@ namespace HapHipHop.Models
             if (string.IsNullOrEmpty(source) || string.IsNullOrEmpty(target)) return 0.0;
             if (source == target) return 1.0;
 
-            int stepsToSame = GetMaxSimilarity(source, target);
+            int stepsToSame = ComputeLevenshteinDistance(source, target);
             return (1.0 - ((double)stepsToSame / Math.Max(source.Length, target.Length)));
         }
 
