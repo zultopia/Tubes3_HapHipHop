@@ -1,79 +1,81 @@
 using System;
 using System.Collections.Generic;
 
-public static class KMPAlgorithm
+namespace HapHipHop.Models
 {
-    public static (List<int> positions, int comparisons, List<(int, int, char, char)> comparedCharacters) KMPSearch(string pat, string txt)
+    public static class KMPAlgorithm
     {
-        int M = pat.Length;
-        int N = txt.Length;
-
-        int[] lps = new int[M];
-        int j = 0;
-        int comparisons = 0; // Variable to count character comparisons
-        List<(int, int, char, char)> comparedCharacters = new List<(int, int, char, char)>(); // List to store compared characters with indices
-
-        ComputeLPSArray(pat, M, lps);
-
-        int i = 0;
-        List<int> results = new List<int>();
-        while (i < N)
+        public static (List<int> positions, int comparisons, List<(int, int, char, char)> comparedCharacters) KMPSearch(string pat, string txt)
         {
-            comparisons++; // Increment comparison count
-            comparedCharacters.Add((i, j, txt[i], pat[j])); // Store compared characters with indices
-            if (pat[j] == txt[i])
-            {
-                j++;
-                i++;
-            }
+            int M = pat.Length;
+            int N = txt.Length;
 
-            if (j == M)
+            int[] lps = new int[M];
+            int j = 0;
+            int comparisons = 0; // Variable to count character comparisons
+            List<(int, int, char, char)> comparedCharacters = new List<(int, int, char, char)>(); // List to store compared characters with indices
+
+            ComputeLPSArray(pat, M, lps);
+
+            int i = 0;
+            List<int> results = new List<int>();
+            while (i < N)
             {
-                results.Add(i - j);
-                j = lps[j - 1];
-            }
-            else if (i < N && pat[j] != txt[i])
-            {
-                if (j != 0)
+                comparisons++; // Increment comparison count
+                comparedCharacters.Add((i, j, txt[i], pat[j])); // Store compared characters with indices
+                if (pat[j] == txt[i])
                 {
+                    j++;
+                    i++;
+                }
+
+                if (j == M)
+                {
+                    results.Add(i - j);
                     j = lps[j - 1];
                 }
-                else
+                else if (i < N && pat[j] != txt[i])
                 {
-                    i++;
+                    if (j != 0)
+                    {
+                        j = lps[j - 1];
+                    }
+                    else
+                    {
+                        i++;
+                    }
                 }
             }
+            return (results, comparisons, comparedCharacters);
         }
-        return (results, comparisons, comparedCharacters);
-    }
 
-    private static void ComputeLPSArray(string pat, int M, int[] lps)
-    {
-        int len = 0;
-        int i = 1;
-        lps[0] = 0;
-
-        while (i < M)
+        private static void ComputeLPSArray(string pat, int M, int[] lps)
         {
-            if (pat[i] == pat[len])
+            int len = 0;
+            int i = 1;
+            lps[0] = 0;
+
+            while (i < M)
             {
-                len++;
-                lps[i] = len;
-                i++;
-            }
-            else
-            {
-                if (len != 0)
+                if (pat[i] == pat[len])
                 {
-                    len = lps[len - 1];
-                }
-                else
-                {
+                    len++;
                     lps[i] = len;
                     i++;
+                }
+                else
+                {
+                    if (len != 0)
+                    {
+                        len = lps[len - 1];
+                    }
+                    else
+                    {
+                        lps[i] = len;
+                        i++;
+                    }
                 }
             }
         }
     }
 }
-

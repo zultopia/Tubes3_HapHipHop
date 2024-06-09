@@ -7,6 +7,7 @@
         mc:Ignorable="d" d:DesignWidth="1280" d:DesignHeight="720"
         x:Class="HapHipHop.Views.BioPrint"
         x:DataType="vm:BioPrintViewModel"
+        DataContext="{Binding RelativeSource={RelativeSource Self}}"
         Icon="/Assets/avalonia-logo.ico"
         Title="HapHipHop"
         Height="720"

@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "/Users/azulsuhada/Documents/Semester4/Stima/Tubes-3-Stima/Tubes3_HapHipHop/src/HapHipHop.csproj": {}
+    "E:\\Kuliah Informatika\\Semester 4\\Strategi Algoritma\\Tubes3_HapHipHop\\src\\HapHipHop.csproj": {}
   },
   "projects": {
-    "/Users/azulsuhada/Documents/Semester4/Stima/Tubes-3-Stima/Tubes3_HapHipHop/src/HapHipHop.csproj": {
+    "E:\\Kuliah Informatika\\Semester 4\\Strategi Algoritma\\Tubes3_HapHipHop\\src\\HapHipHop.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/azulsuhada/Documents/Semester4/Stima/Tubes-3-Stima/Tubes3_HapHipHop/src/HapHipHop.csproj",
+        "projectUniqueName": "E:\\Kuliah Informatika\\Semester 4\\Strategi Algoritma\\Tubes3_HapHipHop\\src\\HapHipHop.csproj",
         "projectName": "HapHipHop",
-        "projectPath": "/Users/azulsuhada/Documents/Semester4/Stima/Tubes-3-Stima/Tubes3_HapHipHop/src/HapHipHop.csproj",
-        "packagesPath": "/Users/azulsuhada/.nuget/packages/",
-        "outputPath": "/Users/azulsuhada/Documents/Semester4/Stima/Tubes-3-Stima/Tubes3_HapHipHop/src/obj/",
+        "projectPath": "E:\\Kuliah Informatika\\Semester 4\\Strategi Algoritma\\Tubes3_HapHipHop\\src\\HapHipHop.csproj",
+        "packagesPath": "C:\\Users\\ASUS\\.nuget\\packages\\",
+        "outputPath": "E:\\Kuliah Informatika\\Semester 4\\Strategi Algoritma\\Tubes3_HapHipHop\\src\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/Users/azulsuhada/.nuget/NuGet/NuGet.Config"
+          "C:\\Users\\ASUS\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
@@ -66,6 +66,14 @@
             "Avalonia.Themes.Fluent": {
               "target": "Package",
               "version": "[11.0.10, )"
+            },
+            "Npgsql": {
+              "target": "Package",
+              "version": "[8.0.3, )"
+            },
+            "System.Drawing.Common": {
+              "target": "Package",
+              "version": "[8.0.6, )"
             }
           },
           "imports": [
@@ -84,7 +92,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.204/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.204/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
