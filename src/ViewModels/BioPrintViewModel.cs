@@ -141,7 +141,7 @@ namespace HapHipHop.ViewModels
             else
             {
                 SearchResultImage = null;
-                SearchResultBioData = "❌ No match found! ❌";
+                SearchResultBioData = "❌ Tidak ada data yang cocok ❌";
                 SearchTime = "Waktu Eksekusi: 0 ms";
                 MatchPercentage = "Persentase Kecocokan: 0 %";
             }

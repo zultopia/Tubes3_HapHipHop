@@ -20,7 +20,7 @@
 
     <Grid>
         <!-- Button "Pilih Citra" -->
-        <Button Content="Pilih Citra" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,1100,200"
+        <Button Content="Pilih Citra" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,900,200"
             Height="40" Width="120"
             Background="#778A35" Foreground="White"
             BorderThickness="0" Padding="10"
@@ -30,7 +30,7 @@
         </Button>
 
         <!-- Toggle switch untuk memilih BM atau KMP -->
-        <ToggleSwitch x:Name="toggleSwitch" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,625,200"
+        <ToggleSwitch x:Name="toggleSwitch" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,425,200"
             Width="200" Height="40" BorderThickness="0" Padding="10"
             Background="#D1E2C4" Foreground="#778A35" FontFamily="Comic Sans MS"
             HorizontalContentAlignment="Center"
@@ -39,7 +39,7 @@
         </ToggleSwitch>
 
         <!-- Button "Search" -->
-        <Button Content="Search" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,500,200"
+        <Button Content="Search" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,300,200"
             Height="40" Width="80"
             Background="#778A35" Foreground="White"
             BorderThickness="0" Padding="10"
